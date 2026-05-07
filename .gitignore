@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+ENV/
+
+# Data
+# Usually we don't commit large PDFs or large generated datasets
+# data/raw/
+# data/chunks/
+
+# IDEs
+.vscode/
+.idea/

@@ -1,0 +1,14 @@
+
+PyMuPDF
+pytesseract
+langchain
+langchain-experimental
+langchain-huggingface
+sentence-transformers
+tiktoken
+nltk
+Pillow
+tqdm
+python-dotenv
+fitz
+pytesseract
