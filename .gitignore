@@ -10,6 +10,15 @@ ENV/
 # Usually we don't commit large PDFs or large generated datasets
 # data/raw/
 # data/chunks/
+*.db
+data/chroma_db/
+
+# Node
+node_modules/
+dist/
+
+# Environment
+.env
 
 # IDEs
 .vscode/
