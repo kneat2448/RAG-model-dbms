@@ -1,0 +1,79 @@
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.quiz-card {
+  padding: 2.5rem;
+  margin-top: 2rem;
+  animation: slideUp 0.4s ease-out;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin-bottom: 2rem;
+}
+
+.quiz-textarea {
+  min-height: 150px;
+  font-size: 1.1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.quiz-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback-section {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.score-badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.score-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.text-success { color: var(--success); }
+.text-warning { color: #f59e0b; }
+.text-danger { color: var(--danger); }
+
+.missed-concepts {
+  margin-top: 1.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+}
+
+.missed-concepts h4 {
+  color: var(--danger);
+  margin-bottom: 0.5rem;
+}
+
+.missed-concepts ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.animation-slide-up {
+  animation: slideUp 0.3s ease-out;
+}

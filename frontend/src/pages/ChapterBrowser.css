@@ -1,0 +1,78 @@
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  animation: slideUp 0.5s ease-out;
+}
+
+.chapter-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.chapter-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.active-card {
+  border-color: var(--accent-primary);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.chapter-icon {
+  background: var(--bg-secondary);
+  color: var(--accent-primary);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  margin-right: 1rem;
+}
+
+.active-card .chapter-icon {
+  background: var(--accent-primary);
+  color: white;
+}
+
+.chapter-content {
+  flex: 1;
+}
+
+.chapter-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.125rem;
+}
+
+.chapter-title {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.chapter-action {
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.2s ease;
+}
+
+.chapter-card:hover .chapter-action {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--accent-primary);
+}
+
+.loading-state, .error-state, .empty-state {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.error-state {
+  color: var(--danger);
+}
