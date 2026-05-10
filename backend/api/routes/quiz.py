@@ -15,9 +15,11 @@ router = APIRouter()
 quiz_gen = QuizGenerator()
 llm_client = LLMClient()
 
+import os
+
 # Database setup
-DATABASE_URL = "sqlite:///./sql_app.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5433/dbms_rag")
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Dependency to get DB session
@@ -30,21 +32,21 @@ def get_db():
 
 @router.post("/generate", response_model=QuizResponse)
 @limiter.limit("10/minute")
-async def generate_quiz(request: QuizRequest, req: Request, db: Session = Depends(get_db)):
+async def generate_quiz(payload: QuizRequest, request: Request, db: Session = Depends(get_db)):
     """
     Generates n MCQ questions for a chapter and stores the session.
     """
     # 1. Generate quiz questions from chunks
     # Note: QuizGenerator.generate_quiz returns a list of MCQ dicts
-    raw_questions = quiz_gen.generate_quiz(request.chapter_id, n=request.n)
+    raw_questions = quiz_gen.generate_quiz(payload.chapter_id, n=payload.n)
     
     if not raw_questions:
         raise HTTPException(status_code=404, detail="No content found for this chapter to generate a quiz.")
 
     # 2. Create and store the QuizSession
     new_session = QuizSession(
-        user_id=request.user_id,
-        chapter_id=request.chapter_id
+        user_id=payload.user_id,
+        chapter_id=payload.chapter_id
     )
     db.add(new_session)
     db.commit()

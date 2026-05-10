@@ -20,3 +20,4 @@ tqdm
 watchfiles
 pymupdf
 pytesseract
+psycopg2-binary

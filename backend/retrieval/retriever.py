@@ -125,17 +125,32 @@ class HybridRetriever:
         4. Cross-Encoder Reranking (Top 40 -> Top 5)
         5. Cache Storage
         """
-        # 1. Cache Check
+        # 1. Query Embedding Cache Check
+        query_cache_key = f"emb:{query}"
+        query_vec = None
+        
+        if self.redis:
+            cached_emb = self.redis.get(query_cache_key)
+            if cached_emb:
+                print(f"Query embedding cache hit for: '{query}'")
+                query_vec = json.loads(cached_emb)
+
+        if not query_vec:
+            print(f"Embedding query: '{query}'...")
+            query_vec = self.embedder.model.encode(query).tolist()
+            if self.redis:
+                self.redis.setex(query_cache_key, 3600, json.dumps(query_vec))
+                
+        # 1.5 Result Cache Check
         cache_key = self._get_cache_key(query, chapter_filter)
         if self.redis:
             cached_data = self.redis.get(cache_key)
             if cached_data:
-                print(f"Cache hit for query: '{query}'")
+                print(f"Result cache hit for query: '{query}'")
                 return json.loads(cached_data)
 
         # 2. Dense Retrieval
-        print(f"Performing dense retrieval for: '{query}'...")
-        query_vec = self.embedder.model.encode(query).tolist()
+        print(f"Performing dense retrieval...")
         
         # Prepare ChromaDB filter
         where_filter = {"chapter": chapter_filter} if chapter_filter else None

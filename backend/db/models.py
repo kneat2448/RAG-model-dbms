@@ -52,5 +52,7 @@ def query_weak_chapters(db_session):
     )
     return db_session.execute(stmt).all()
 
-# Database engine setup (using SQLite for local development)
-DATABASE_URL = "sqlite:///./sql_app.db"
+import os
+
+# Database engine setup (using PostgreSQL)
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5433/dbms_rag")

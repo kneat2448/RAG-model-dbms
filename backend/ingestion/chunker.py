@@ -71,26 +71,40 @@ class Chunker:
     def _refine_split(self, text):
         """
         Splits text into chunks of target_max tokens, respecting sentence boundaries.
+        Includes overlap logic to preserve context across chunks.
         """
         sentences = sent_tokenize(text)
         refined = []
-        curr_text = ""
+        curr_sentences = []
         curr_tokens = 0
         
         for sent in sentences:
             sent_tokens = self.count_tokens(sent)
-            if curr_tokens + sent_tokens > self.target_max:
-                if curr_text:
-                    refined.append(curr_text.strip())
-                # Start new chunk
-                curr_text = sent
-                curr_tokens = sent_tokens
+            
+            if curr_tokens + sent_tokens > self.target_max and curr_sentences:
+                refined.append(" ".join(curr_sentences).strip())
+                
+                # Create overlap for next chunk
+                overlap_sentences = []
+                overlap_tokens = 0
+                # Iterate backwards through current sentences to build overlap
+                for s in reversed(curr_sentences):
+                    t = self.count_tokens(s)
+                    if overlap_tokens + t <= self.overlap:
+                        overlap_sentences.insert(0, s)
+                        overlap_tokens += t
+                    else:
+                        break
+                        
+                # Start new chunk with overlap sentences + the new sentence
+                curr_sentences = overlap_sentences + [sent]
+                curr_tokens = overlap_tokens + sent_tokens
             else:
-                curr_text += " " + sent
+                curr_sentences.append(sent)
                 curr_tokens += sent_tokens
                 
-        if curr_text:
-            refined.append(curr_text.strip())
+        if curr_sentences:
+            refined.append(" ".join(curr_sentences).strip())
         return refined
 
     def _attach_metadata(self, content, full_text, offsets):
